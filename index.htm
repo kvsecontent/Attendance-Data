@@ -260,43 +260,46 @@
             margin-top: 3px;
         }
         
-        .late {
-            color: #f57c00;
-        }
+       /* Make late status more visible */
+.late {
+    color: #ff6d00;
+    font-weight: bold;
+}
+ }
         
         .on-time {
             color: #388e3c;
         }
         
-        /* New styles for Sundays and Holidays */
-        .sunday {
-            background-color: #ffeeee;
-        }
-        
-        .sunday .status {
-            background-color: #ffcdd2;
-            color: #c62828;
-            font-weight: bold;
-        }
-        
-        .holiday .status {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            font-style: italic;
-        }
-        
-        /* Modify the existing no-school class */
-        .no-school {
-            background-color: #f5f5f5;
-            color: #757575;
-        }
-        
-        /* Add highlighting for the date number on Sundays */
-        .sunday .date {
-            color: #d32f2f;
-            font-weight: bold;
-        }
-        
+       /* Replace the Sunday and Holiday styles in index.html with these enhanced styles */
+
+.sunday {
+    background-color: #ffeeee;
+}
+
+.sunday .status {
+    background-color: #ffcdd2;
+    color: #c62828;
+    font-weight: bold;
+}
+
+.holiday .status {
+    background-color: #f5f5f5;
+    color: #757575;
+    font-style: italic;
+}
+
+.present {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    font-weight: bold;
+}
+
+/* Improve the date number styling */
+.sunday .date {
+    color: #d32f2f;
+    font-weight: bold;
+} 
         .summary {
             display: flex;
             flex-wrap: wrap;
@@ -519,10 +522,18 @@
                 max-width: 95%;
             }
             
-            .calendar-day {
-                min-height: 50px;
-                padding: 4px;
-            }
+           /* Add a border to each calendar day */
+.calendar-day {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 5px;
+    min-height: 60px;
+    text-align: center;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 2px;
+ }
             
             .month-selector {
                 margin: 5px 0;
@@ -656,10 +667,14 @@
                 padding: 3px;
             }
             
-            .calendar-day .status {
-                font-size: 10px;
-                padding: 2px;
-            }
+            /* Improve calendar status badges */
+.calendar-day .status {
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin: 5px 0;
+    display: block;
+}}
             
             .calendar-day .time-status {
                 font-size: 9px;
