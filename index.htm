@@ -754,14 +754,38 @@
                 left: 0;
                 top: 0;
                 width: 100%;
-                border: 2px solid #3f51b5 !important;
-                padding: 15px !important;
+                border: none !important;
+                padding: 0 !important;
                 box-sizing: border-box !important;
                 background-color: white !important;
-                /* Scale content to fit on one page */
-                transform: scale(0.95);
+                transform: scale(0.9);
                 transform-origin: top center;
-                page-break-inside: avoid !important;
+            }
+            
+            /* Ensure all content fits on one page */
+            .school-info {
+                margin-bottom: 8px !important;
+            }
+            
+            .school-logo {
+                width: 70px !important;
+                height: 56px !important;
+            }
+            
+            .school-info h2 {
+                margin: 5px 0 2px !important;
+                font-size: 16px !important;
+            }
+            
+            .student-info {
+                padding: 5px !important;
+                margin-bottom: 8px !important;
+                border: 1px solid #ccc !important;
+            }
+            
+            .student-info p {
+                margin: 3px 0 !important;
+                font-size: 12px !important;
             }
             
             /* Hide scroll indicator when printing */
@@ -769,99 +793,126 @@
                 display: none !important;
             }
             
-            /* Adjust calendar size to fit better */
+            /* Make calendar more compact */
+            .calendar-container {
+                margin-bottom: 8px !important;
+                overflow: visible !important;
+                padding-bottom: 0 !important;
+            }
+            
+            .calendar {
+                min-width: auto !important;
+                width: 100% !important;
+                gap: 2px !important;
+            }
+            
+            .calendar-header {
+                padding: 2px !important;
+                font-size: 10px !important;
+            }
+            
             .calendar-day {
-                min-height: 35px !important;
-                padding: 3px !important;
+                min-height: 30px !important;
+                padding: 2px !important;
+                font-size: 9px !important;
+                margin: 1px !important;
+                border-radius: 4px !important;
+            }
+            
+            .calendar-day .date {
+                margin-bottom: 1px !important;
                 font-size: 10px !important;
             }
             
             .calendar-day .status {
-                padding: 2px !important;
-                margin: 3px 0 !important;
+                padding: 1px !important;
+                font-size: 8px !important;
+                margin: 1px 0 !important;
             }
             
-            .calendar-day .date {
-                margin-bottom: 2px !important;
+            .calendar-day .time-status {
+                font-size: 7px !important;
+                margin-top: 1px !important;
             }
             
             /* Reduce spacing for compact printing */
             .attendance-summary {
-                padding: 5px !important;
-                margin-bottom: 8px !important;
+                padding: 4px !important;
+                margin-bottom: 6px !important;
             }
             
             .attendance-summary-item {
                 padding: 2px !important;
             }
             
+            .attendance-summary-item p {
+                margin: 1px 0 !important;
+                font-size: 10px !important;
+            }
+            
             .attendance-summary-item .value {
-                font-size: 16px !important;
+                font-size: 14px !important;
             }
             
             .month-selector {
-                margin-bottom: 5px !important;
+                margin-bottom: 4px !important;
             }
             
-            .calendar-container {
+            .month-title {
+                font-size: 14px !important;
+            }
+            
+            .month-nav {
+                display: none !important;
+            }
+            
+            /* Ensure summary section is compact */
+            .summary {
                 margin-bottom: 8px !important;
-                overflow: visible !important;
-            }
-            
-            .calendar {
-                min-width: auto !important;
-                width: 100% !important;
-            }
-            
-            /* Ensure no page breaks within important sections */
-            .student-info, .attendance-section, .summary, .signature-section {
-                page-break-inside: avoid !important;
-            }
-            
-            .student-info {
-                border: 1px solid #000 !important;
-            }
-            
-            .calendar-day {
-                border: 1px solid #000 !important;
             }
             
             .total-section, .result-section {
-                border: 1px solid #000 !important;
+                margin: 2px !important;
+                padding: 5px !important;
+                font-size: 11px !important;
+                border: 1px solid #ccc !important;
             }
             
+            /* Make signatures more compact */
+            .signature-section {
+                margin-top: 8px !important;
+            }
+            
+            .signature p {
+                margin: 2px 0 !important;
+                font-size: 11px !important;
+            }
+            
+            /* Ensure disclaimer is small */
+            .disclaimer {
+                margin: 8px auto 5px !important;
+                padding-top: 5px !important;
+                font-size: 8px !important;
+                border-top: 1px solid #ccc !important;
+            }
+            
+            /* Hide print button when printing */
             .print-button {
                 display: none !important;
             }
             
-            .present { color: #1976d2 !important; }
-            .absent { color: #d32f2f !important; }
+            /* Ensure colors appear in print */
+            .present { color: #1976d2 !important; background-color: #e3f2fd !important; }
+            .absent { color: #d32f2f !important; background-color: #ffebee !important; }
             .late { color: #f57c00 !important; }
             .on-time { color: #388e3c !important; }
-            .sunday .status { color: #c62828 !important; }
+            .sunday .status { color: #c62828 !important; background-color: #ffcdd2 !important; }
             .holiday .status { color: #2e7d32 !important; }
             
-            .disclaimer {
-                position: relative !important;
-                visibility: visible !important;
-                display: block !important;
-                margin: 20px auto 10px !important;
-                text-align: center !important;
-                font-family: 'Times New Roman', Times, serif !important;
-                width: 90% !important;
-                font-size: 10px !important;
-            }
-            
-            .disclaimer p {
-                text-align: center !important;
-                margin: 0 auto !important;
-                width: 100% !important;
-            }
-            
+            /* Set page properties */
             @page {
                 size: A4 portrait;
-                margin: 10mm;
-                scale: 90%;
+                margin: 5mm !important;
             }
         }
     </style>
@@ -1126,7 +1177,10 @@
             document.getElementById('studentRoll').textContent = rollNumber;
             document.getElementById('studentClass').textContent = data.student.class || 'N/A';
             document.getElementById('academicYear').textContent = "2024-25";
-            document.getElementById('schoolName').textContent = data.student.school || 'School Name';
+            
+            // Get school name from the School column - case sensitive match
+            document.getElementById('schoolName').textContent = data.student.School || 'Kendriya Vidyalaya';
+            
             document.getElementById('studentDOB').textContent = data.student.dob || 'N/A';
             document.getElementById('fatherName').textContent = data.student.fatherName || 'N/A';
             document.getElementById('motherName').textContent = data.student.motherName || 'N/A';
