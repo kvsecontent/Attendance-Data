@@ -195,6 +195,7 @@
             -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
             margin-bottom: 15px;
             padding-bottom: 10px; /* Space for scrollbar */
+            position: relative;
         }
         
         .calendar {
@@ -214,13 +215,14 @@
         
         .calendar-day {
             border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 5px;
+            border-radius: 8px;
+            padding: 8px 5px;
             min-height: 60px;
             text-align: center;
             touch-action: manipulation;
             cursor: pointer;
             transition: background-color 0.2s;
+            margin: 2px;
         }
         
         .calendar-day:active {
@@ -233,10 +235,11 @@
         }
         
         .calendar-day .status {
-            padding: 3px;
-            border-radius: 3px;
-            font-size: 12px;
-            margin-bottom: 3px;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin: 5px 0;
+            display: block;
         }
         
         .present {
@@ -260,46 +263,38 @@
             margin-top: 3px;
         }
         
-       /* Make late status more visible */
-.late {
-    color: #ff6d00;
-    font-weight: bold;
-}
- }
+        .late {
+            color: #ff6d00;
+            font-weight: bold;
+        }
         
         .on-time {
             color: #388e3c;
         }
         
-       /* Replace the Sunday and Holiday styles in index.html with these enhanced styles */
-
-.sunday {
-    background-color: #ffeeee;
-}
-
-.sunday .status {
-    background-color: #ffcdd2;
-    color: #c62828;
-    font-weight: bold;
-}
-
-.holiday .status {
-    background-color: #f5f5f5;
-    color: #757575;
-    font-style: italic;
-}
-
-.present {
-    background-color: #e3f2fd;
-    color: #1976d2;
-    font-weight: bold;
-}
-
-/* Improve the date number styling */
-.sunday .date {
-    color: #d32f2f;
-    font-weight: bold;
-} 
+        /* Styles for Sundays and Holidays */
+        .sunday {
+            background-color: #ffeeee;
+        }
+        
+        .sunday .status {
+            background-color: #ffcdd2;
+            color: #c62828;
+            font-weight: bold;
+        }
+        
+        .holiday .status {
+            background-color: #f5f5f5;
+            color: #757575;
+            font-style: italic;
+        }
+        
+        /* Improve the date number styling */
+        .sunday .date {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
         .summary {
             display: flex;
             flex-wrap: wrap;
@@ -522,18 +517,10 @@
                 max-width: 95%;
             }
             
-           /* Add a border to each calendar day */
-.calendar-day {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 8px 5px;
-    min-height: 60px;
-    text-align: center;
-    touch-action: manipulation;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin: 2px;
- }
+            .calendar-day {
+                min-height: 50px;
+                padding: 4px;
+            }
             
             .month-selector {
                 margin: 5px 0;
@@ -667,14 +654,10 @@
                 padding: 3px;
             }
             
-            /* Improve calendar status badges */
-.calendar-day .status {
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 13px;
-    margin: 5px 0;
-    display: block;
-}}
+            .calendar-day .status {
+                font-size: 10px;
+                padding: 2px;
+            }
             
             .calendar-day .time-status {
                 font-size: 9px;
@@ -1005,7 +988,7 @@
         </div>
         
         <div class="version-info">
-            v1.1 - Horizontal Attendance Format with Sunday & Holiday Support
+            v1.2 - Simplified Attendance Format with Direct Date Headers
         </div>
     </div>
 
