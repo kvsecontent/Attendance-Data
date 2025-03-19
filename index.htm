@@ -1172,37 +1172,17 @@
             // Store current student data
             currentStudent = data;
             
+            // Log the data for debugging
+            console.log("Full API Response:", data);
+            
             // Set student info
             document.getElementById('studentName').textContent = data.student.name || 'N/A';
             document.getElementById('studentRoll').textContent = rollNumber;
             document.getElementById('studentClass').textContent = data.student.class || 'N/A';
-            document.getElementById('academicYear').textContent = "2025-26";
+            document.getElementById('academicYear').textContent = data.attendance.academicYear || "2024-25";
             
-            // Try multiple ways to get school name
-            let schoolName = "KENDRIYA VIDYALAYA SANGTHAN";
-            if (data.student) {
-                // Check all possible property names for school
-                if (data.student.School) {
-                    schoolName = data.student.School;
-                } else if (data.student.school) {
-                    schoolName = data.student.school;
-                } else if (data.student.SCHOOL) {
-                    schoolName = data.student.SCHOOL;
-                } else if (data.student.SchoolName) {
-                    schoolName = data.student.SchoolName;
-                } else if (data.student.schoolName) {
-                    schoolName = data.student.schoolName;
-                } else {
-                    // Try to find any property that might contain "school"
-                    for (const key in data.student) {
-                        if (key.toLowerCase().includes('school') && data.student[key]) {
-                            schoolName = data.student[key];
-                            break;
-                        }
-                    }
-                }
-            }
-            document.getElementById('schoolName').textContent = schoolName;
+            // Set school name - use the School property with capital S
+            document.getElementById('schoolName').textContent = data.student.School || 'KENDRIYA VIDYALAYA SANGTHAN';
             
             document.getElementById('studentDOB').textContent = data.student.dob || 'N/A';
             document.getElementById('fatherName').textContent = data.student.fatherName || 'N/A';
@@ -1296,6 +1276,9 @@
                 calendarElement.appendChild(emptyDay);
             }
             
+            // Log the days data for debugging
+            console.log(`Days data for ${monthData.month + 1}/${monthData.year}:`, monthData.days);
+            
             // Add days of the month
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayData = monthData.days.find(d => d.day === day);
@@ -1303,40 +1286,58 @@
                 const dayCell = document.createElement('div');
                 dayCell.className = 'calendar-day';
                 
-                // Check if it's a Sunday
+                // Determine if it's a Sunday from the date object
                 const date = new Date(monthData.year, monthData.month, day);
                 const isSunday = date.getDay() === 0;
                 
+                // If it's a Sunday, add the sunday class
                 if (isSunday) {
                     dayCell.classList.add('sunday');
                 }
                 
+                // Add the date number
                 const dateDiv = document.createElement('div');
                 dateDiv.className = 'date';
                 dateDiv.textContent = day;
                 dayCell.appendChild(dateDiv);
                 
                 if (dayData) {
-                    // Special styling for holidays and Sundays
-                    if (dayData.isSunday || (dayData.status === 'no-school' && isSunday)) {
+                    // Check if it's marked as Sunday in the data
+                    const isDataSunday = dayData.isSunday === true || 
+                                       (dayData.status && dayData.status.toLowerCase() === 'sunday');
+                    
+                    // Check if it's marked as Holiday in the data
+                    const isHoliday = dayData.isHoliday === true || 
+                                     (dayData.status && (
+                                       dayData.status.toLowerCase() === 'holiday' || 
+                                       dayData.status.toLowerCase() === 'no-school'));
+                    
+                    // If it's marked as Sunday in the data or it's actually a Sunday
+                    if (isDataSunday || (dayData.status === 'no-school' && isSunday)) {
                         const statusDiv = document.createElement('div');
                         statusDiv.className = 'status no-school sunday';
                         statusDiv.textContent = 'Sunday';
                         dayCell.appendChild(statusDiv);
                     } 
-                    else if (dayData.isHoliday || dayData.status === 'no-school') {
+                    // If it's marked as a Holiday in the data
+                    else if (isHoliday) {
                         const statusDiv = document.createElement('div');
                         statusDiv.className = 'status no-school holiday';
                         statusDiv.textContent = 'Holiday';
                         dayCell.appendChild(statusDiv);
                     } 
+                    // Regular school day (present/absent)
                     else {
-                        // Regular school day (present/absent)
+                        // Determine present/absent status
+                        const isPresent = dayData.status === 'present' || 
+                                        (typeof dayData.status === 'string' && dayData.status.toLowerCase().includes('p'));
+                        
                         const statusDiv = document.createElement('div');
-                        statusDiv.className = `status ${dayData.status}`;
-                        statusDiv.textContent = dayData.status === 'present' ? 'Present' : 'Absent';
+                        statusDiv.className = `status ${isPresent ? 'present' : 'absent'}`;
+                        statusDiv.textContent = isPresent ? 'Present' : 'Absent';
                         dayCell.appendChild(statusDiv);
                         
+                        // Add time status (late/on-time) if available
                         if (dayData.timeStatus) {
                             const timeStatusDiv = document.createElement('div');
                             timeStatusDiv.className = `time-status ${dayData.timeStatus}`;
@@ -1534,8 +1535,40 @@
                 hideLoading();
                 
                 if (result.success && result.data) {
-                    // Log the data to help debug
+                    // Log the data for debugging
                     console.log("API Response:", result.data);
+                    
+                    // Process the data to ensure all days in the month are included
+                    if (result.data.attendance && result.data.attendance.months) {
+                        result.data.attendance.months.forEach(month => {
+                            const daysInMonth = new Date(month.year, month.month + 1, 0).getDate();
+                            
+                            // Create a map of existing days
+                            const existingDays = {};
+                            month.days.forEach(day => {
+                                existingDays[day.day] = true;
+                            });
+                            
+                            // Add any missing days
+                            for (let day = 1; day <= daysInMonth; day++) {
+                                if (!existingDays[day]) {
+                                    const date = new Date(month.year, month.month, day);
+                                    const isSunday = date.getDay() === 0;
+                                    
+                                    month.days.push({
+                                        day: day,
+                                        isSchoolDay: !isSunday,
+                                        status: isSunday ? 'sunday' : 'no-school',
+                                        isSunday: isSunday,
+                                        isHoliday: !isSunday
+                                    });
+                                }
+                            }
+                            
+                            // Sort the days
+                            month.days.sort((a, b) => a.day - b.day);
+                        });
+                    }
                     
                     displayAttendance(result.data, rollNumber);
                 } else {
