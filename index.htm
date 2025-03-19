@@ -252,7 +252,7 @@
         
         .no-school {
             background-color: #f5f5f5;
-            color: #9e9e9e;
+            color: #757575;
         }
         
         .calendar-day .time-status {
@@ -266,6 +266,35 @@
         
         .on-time {
             color: #388e3c;
+        }
+        
+        /* New styles for Sundays and Holidays */
+        .sunday {
+            background-color: #ffeeee;
+        }
+        
+        .sunday .status {
+            background-color: #ffcdd2;
+            color: #c62828;
+            font-weight: bold;
+        }
+        
+        .holiday .status {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            font-style: italic;
+        }
+        
+        /* Modify the existing no-school class */
+        .no-school {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
+        
+        /* Add highlighting for the date number on Sundays */
+        .sunday .date {
+            color: #d32f2f;
+            font-weight: bold;
         }
         
         .summary {
@@ -753,6 +782,8 @@
             .absent { color: #d32f2f !important; }
             .late { color: #f57c00 !important; }
             .on-time { color: #388e3c !important; }
+            .sunday .status { color: #c62828 !important; }
+            .holiday .status { color: #2e7d32 !important; }
             
             .disclaimer {
                 position: relative !important;
@@ -959,7 +990,7 @@
         </div>
         
         <div class="version-info">
-            v1.0 - Connected to Render Backend
+            v1.1 - Horizontal Attendance Format with Sunday & Holiday Support
         </div>
     </div>
 
@@ -1139,24 +1170,54 @@
                 const dayCell = document.createElement('div');
                 dayCell.className = 'calendar-day';
                 
+                // Check if it's a Sunday
+                const date = new Date(monthData.year, monthData.month, day);
+                const isSunday = date.getDay() === 0;
+                
+                if (isSunday) {
+                    dayCell.classList.add('sunday');
+                }
+                
                 const dateDiv = document.createElement('div');
                 dateDiv.className = 'date';
                 dateDiv.textContent = day;
                 dayCell.appendChild(dateDiv);
                 
                 if (dayData) {
-                    const statusDiv = document.createElement('div');
-                    statusDiv.className = `status ${dayData.status}`;
-                    statusDiv.textContent = dayData.isSchoolDay ? 
-                        (dayData.status === 'present' ? 'Present' : 'Absent') : 
-                        'No School';
-                    dayCell.appendChild(statusDiv);
-                    
-                    if (dayData.timeStatus) {
-                        const timeStatusDiv = document.createElement('div');
-                        timeStatusDiv.className = `time-status ${dayData.timeStatus}`;
-                        timeStatusDiv.textContent = dayData.timeStatus === 'late' ? 'Came Late' : 'On Time';
-                        dayCell.appendChild(timeStatusDiv);
+                    // Special styling for holidays and Sundays
+                    if (dayData.isSunday || (dayData.status === 'no-school' && isSunday)) {
+                        const statusDiv = document.createElement('div');
+                        statusDiv.className = 'status no-school sunday';
+                        statusDiv.textContent = 'Sunday';
+                        dayCell.appendChild(statusDiv);
+                    } 
+                    else if (dayData.isHoliday || dayData.status === 'no-school') {
+                        const statusDiv = document.createElement('div');
+                        statusDiv.className = 'status no-school holiday';
+                        statusDiv.textContent = 'Holiday';
+                        dayCell.appendChild(statusDiv);
+                    } 
+                    else {
+                        // Regular school day (present/absent)
+                        const statusDiv = document.createElement('div');
+                        statusDiv.className = `status ${dayData.status}`;
+                        statusDiv.textContent = dayData.status === 'present' ? 'Present' : 'Absent';
+                        dayCell.appendChild(statusDiv);
+                        
+                        if (dayData.timeStatus) {
+                            const timeStatusDiv = document.createElement('div');
+                            timeStatusDiv.className = `time-status ${dayData.timeStatus}`;
+                            timeStatusDiv.textContent = dayData.timeStatus === 'late' ? 'Came Late' : 'On Time';
+                            dayCell.appendChild(timeStatusDiv);
+                        }
+                    }
+                } else {
+                    // If no data and it's a Sunday
+                    if (isSunday) {
+                        const statusDiv = document.createElement('div');
+                        statusDiv.className = 'status no-school sunday';
+                        statusDiv.textContent = 'Sunday';
+                        dayCell.appendChild(statusDiv);
                     }
                 }
                 
@@ -1199,10 +1260,28 @@
                 const dayCell = document.createElement('div');
                 dayCell.className = 'calendar-day';
                 
-                const dateDiv = document.createElement('div');
-                dateDiv.className = 'date';
-                dateDiv.textContent = day;
-                dayCell.appendChild(dateDiv);
+                // Check if it's a Sunday
+                const date = new Date(year, month, day);
+                const isSunday = date.getDay() === 0;
+                
+                if (isSunday) {
+                    dayCell.classList.add('sunday');
+                    
+                    const dateDiv = document.createElement('div');
+                    dateDiv.className = 'date';
+                    dateDiv.textContent = day;
+                    dayCell.appendChild(dateDiv);
+                    
+                    const statusDiv = document.createElement('div');
+                    statusDiv.className = 'status no-school sunday';
+                    statusDiv.textContent = 'Sunday';
+                    dayCell.appendChild(statusDiv);
+                } else {
+                    const dateDiv = document.createElement('div');
+                    dateDiv.className = 'date';
+                    dateDiv.textContent = day;
+                    dayCell.appendChild(dateDiv);
+                }
                 
                 calendarElement.appendChild(dayCell);
             }
