@@ -758,6 +758,64 @@
                 padding: 15px !important;
                 box-sizing: border-box !important;
                 background-color: white !important;
+                /* Scale content to fit on one page */
+                transform: scale(0.95);
+                transform-origin: top center;
+                page-break-inside: avoid !important;
+            }
+            
+            /* Hide scroll indicator when printing */
+            .calendar-container:after {
+                display: none !important;
+            }
+            
+            /* Adjust calendar size to fit better */
+            .calendar-day {
+                min-height: 35px !important;
+                padding: 3px !important;
+                font-size: 10px !important;
+            }
+            
+            .calendar-day .status {
+                padding: 2px !important;
+                margin: 3px 0 !important;
+            }
+            
+            .calendar-day .date {
+                margin-bottom: 2px !important;
+            }
+            
+            /* Reduce spacing for compact printing */
+            .attendance-summary {
+                padding: 5px !important;
+                margin-bottom: 8px !important;
+            }
+            
+            .attendance-summary-item {
+                padding: 2px !important;
+            }
+            
+            .attendance-summary-item .value {
+                font-size: 16px !important;
+            }
+            
+            .month-selector {
+                margin-bottom: 5px !important;
+            }
+            
+            .calendar-container {
+                margin-bottom: 8px !important;
+                overflow: visible !important;
+            }
+            
+            .calendar {
+                min-width: auto !important;
+                width: 100% !important;
+            }
+            
+            /* Ensure no page breaks within important sections */
+            .student-info, .attendance-section, .summary, .signature-section {
+                page-break-inside: avoid !important;
             }
             
             .student-info {
@@ -787,10 +845,11 @@
                 position: relative !important;
                 visibility: visible !important;
                 display: block !important;
-                margin: 30px auto 15px !important;
+                margin: 20px auto 10px !important;
                 text-align: center !important;
                 font-family: 'Times New Roman', Times, serif !important;
                 width: 90% !important;
+                font-size: 10px !important;
             }
             
             .disclaimer p {
@@ -802,6 +861,7 @@
             @page {
                 size: A4 portrait;
                 margin: 10mm;
+                scale: 90%;
             }
         }
     </style>
